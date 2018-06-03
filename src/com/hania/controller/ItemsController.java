@@ -5,17 +5,20 @@ import com.hania.model.Item;
 import com.hania.process.ItemType;
 import com.hania.process.Warehouse;
 import com.hania.process.WarehouseImpl;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -31,31 +34,47 @@ public class ItemsController implements Initializable {
 
     private Warehouse warehouse;
 
-    private List<Item> items;
+    private ObservableList<Item> items;
 
-    @FXML
     private AnchorPane rootPane;
 
     @FXML
-    private TableView table;
+    private TableView<Item> table;
+
+    @FXML
+    private TableColumn<Item, Integer> numberColumn;
+
+    @FXML
+    private TableColumn<Item, String> nameColumn;
+
+    @FXML
+    private TableColumn<Item, String> priceColumn;
+
+    @FXML
+    private TableColumn<Item, ImageView> imageColumn;
 
     @FXML
     private Spinner amountSpinner;
 
     public ItemsController() {
         warehouse = new WarehouseImpl();
-        items = new ArrayList<>();
+        items = FXCollections.observableArrayList();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.resourceBundle = resources;
+        numberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        imageColumn.setCellValueFactory(new PropertyValueFactory<>("image"));
         fillTable();
     }
 
     private void fillTable() {
         Map<ItemType, Integer> warehouseItems = warehouse.getItems();
         warehouseItems.forEach((key, value) -> items.add(new Item(key, value, resourceBundle)));
+        table.setItems(items);
     }
 
     @FXML
