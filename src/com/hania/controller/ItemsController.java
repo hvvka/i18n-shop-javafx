@@ -10,7 +10,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -36,6 +38,7 @@ public class ItemsController implements Initializable {
 
     private ObservableList<Item> items;
 
+    @FXML
     private AnchorPane rootPane;
 
     @FXML
@@ -54,10 +57,11 @@ public class ItemsController implements Initializable {
     private TableColumn<Item, ImageView> imageColumn;
 
     @FXML
-    private Spinner amountSpinner;
+    private Spinner<Integer> amountSpinner;
 
     public ItemsController() {
         warehouse = new WarehouseImpl();
+        warehouse.loadItems();
         items = FXCollections.observableArrayList();
     }
 
@@ -69,9 +73,35 @@ public class ItemsController implements Initializable {
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         imageColumn.setCellValueFactory(new PropertyValueFactory<>("image"));
         fillTable();
+
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 31, 1);
+        amountSpinner.setValueFactory(valueFactory);
+
+        table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                Item selectedItem = table.getSelectionModel().getSelectedItem();
+                amountSpinner.getValueFactory().setValue(selectedItem.getNumber());
+            }
+        });
+
+        amountSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Item selectedItem = table.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                int previousValue = selectedItem.getNumber();
+                if (newValue != previousValue) {
+                    if (newValue > previousValue) {
+                        warehouse.addItem(selectedItem.getItemType());
+                    } else {
+                        warehouse.deleteItem(selectedItem.getItemType());
+                    }
+                    fillTable();
+                }
+            }
+        });
     }
 
     private void fillTable() {
+        table.getItems().clear();
         Map<ItemType, Integer> warehouseItems = warehouse.getItems();
         warehouseItems.forEach((key, value) -> items.add(new Item(key, value, resourceBundle)));
         table.setItems(items);
@@ -79,14 +109,17 @@ public class ItemsController implements Initializable {
 
     @FXML
     public void onBack() {
-        FXMLLoader loader = getFXMLLoader();
         try {
-            rootPane = loader.load();
+            changeScene();
         } catch (IOException e) {
             LOG.throwing("ItemsController", "onBack", e);
         }
+    }
 
-        Main.setScene(rootPane);
+    private void changeScene() throws IOException {
+        Parent pane = getFXMLLoader().load();
+        Main.getPrimaryStage().getScene().setRoot(pane);
+        Main.getPrimaryStage().show();
     }
 
     private FXMLLoader getFXMLLoader() {
@@ -94,11 +127,5 @@ public class ItemsController implements Initializable {
         loader.setResources(resourceBundle);
         loader.setLocation(getClass().getResource("../view/MainView.fxml"));
         return loader;
-    }
-
-    @FXML
-    public void onRotate() {
-        //todo
-        table.getSelectionModel().getSelectedCells().get(1);
     }
 }

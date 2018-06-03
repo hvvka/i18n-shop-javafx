@@ -3,7 +3,8 @@
 Project based on the [i18n-shop](https://github.com/hvvka/i18n-shop), 
 but migrated from Swing to JavaFX.
 
-The `process` package (logic) remained the same.
+The `process` package (logic) remained almost the same 
+– there was a small improvement of `ItemType` and resource bundle.
 
 > Desktop application to manage appliances from electronics' store.
 

@@ -5,6 +5,7 @@ import com.hania.model.Language;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 
@@ -37,14 +38,17 @@ public class MainController implements Initializable {
 
     @FXML
     public void onShowProducts() {
-        FXMLLoader loader = getFXMLLoader();
         try {
-            rootPane = loader.load();
+            changeScene();
         } catch (IOException e) {
             LOG.throwing("MainController", "onShowProducts", e);
         }
+    }
 
-        Main.setScene(rootPane);
+    private void changeScene() throws IOException {
+        Parent pane = getFXMLLoader().load();
+        Main.getPrimaryStage().getScene().setRoot(pane);
+        Main.getPrimaryStage().show();
     }
 
     private FXMLLoader getFXMLLoader() {

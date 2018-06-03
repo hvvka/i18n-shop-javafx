@@ -17,9 +17,8 @@ public class Main extends Application {
 
     private static Stage primaryStage;
 
-    public static void setScene(AnchorPane root) {
-        primaryStage.setScene(new Scene(root, 600, 400));
-        primaryStage.show();
+    public static Stage getPrimaryStage() {
+        return primaryStage;
     }
 
     public static void main(String[] args) {
@@ -36,6 +35,7 @@ public class Main extends Application {
         loader.setLocation(getClass().getResource("view/MainView.fxml"));
 
         AnchorPane root = loader.load();
+
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
     }
