@@ -2,7 +2,6 @@ package com.hania.model;
 
 import com.hania.process.ItemType;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 import java.io.File;
 import java.text.MessageFormat;
@@ -23,7 +22,7 @@ public class Item {
 
     private String price;
 
-    private ImageView image;
+    private Image image;
 
     public Item() {
     }
@@ -34,9 +33,7 @@ public class Item {
         String pattern = resourceBundle.getString("item." + itemType.toString().toLowerCase());
         this.name = MessageFormat.format(pattern, number);
         this.price = MessageFormat.format(resourceBundle.getString("item.price"), itemType.getPrice());
-
-        Image img = new Image(new File(IMAGE_URL_BASE + itemType.toString() + ".jpg").toURI().toString());
-        this.image = new ImageView(img);
+        this.image = new Image(new File(IMAGE_URL_BASE + itemType.toString() + ".jpg").toURI().toString());
     }
 
     public ItemType getItemType() {
@@ -57,5 +54,9 @@ public class Item {
 
     public String getPrice() {
         return price;
+    }
+
+    public Image getImage() {
+        return image;
     }
 }

@@ -54,7 +54,7 @@ public class ItemsController implements Initializable {
     private TableColumn<Item, String> priceColumn;
 
     @FXML
-    private TableColumn<Item, ImageView> imageColumn;
+    private ImageView imageView;
 
     @FXML
     private Spinner<Integer> amountSpinner;
@@ -71,7 +71,6 @@ public class ItemsController implements Initializable {
         numberColumn.setCellValueFactory(new PropertyValueFactory<>("number"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-        imageColumn.setCellValueFactory(new PropertyValueFactory<>("image"));
         fillTable();
 
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 31, 1);
@@ -81,6 +80,7 @@ public class ItemsController implements Initializable {
             if (newSelection != null) {
                 Item selectedItem = table.getSelectionModel().getSelectedItem();
                 amountSpinner.getValueFactory().setValue(selectedItem.getNumber());
+                imageView.setImage(selectedItem.getImage());
             }
         });
 

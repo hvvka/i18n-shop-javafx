@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="rootPane" prefHeight="400.0" prefWidth="600.0"
             xmlns="http://javafx.com/javafx/8.0.121" fx:controller="com.hania.controller.ItemsController">
   <children>
     <TableView fx:id="table" layoutX="172.0" layoutY="14.0" prefHeight="371.0" prefWidth="414.0">
       <columns>
-        <TableColumn fx:id="numberColumn" prefWidth="75.0" text="%table.column1"/>
-        <TableColumn fx:id="nameColumn" prefWidth="114.0" text="%table.column2"/>
-        <TableColumn fx:id="priceColumn" prefWidth="88.0" text="%table.column3"/>
-        <TableColumn fx:id="imageColumn" prefWidth="136.0" text="%table.column4"/>
+        <TableColumn fx:id="numberColumn" prefWidth="137.0" text="%table.column1"/>
+        <TableColumn fx:id="nameColumn" prefWidth="153.0" text="%table.column2"/>
+        <TableColumn fx:id="priceColumn" prefWidth="123.0" text="%table.column3"/>
       </columns>
     </TableView>
     <Button alignment="TOP_LEFT" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBack"
-            text="%menu.back"/>
-    <Spinner fx:id="amountSpinner" layoutX="14.0" layoutY="187.0" prefHeight="27.0" prefWidth="97.0"/>
+            prefHeight="27.0" prefWidth="144.0" text="%menu.back"/>
+    <Spinner fx:id="amountSpinner" layoutX="14.0" layoutY="273.0" prefHeight="27.0" prefWidth="102.0"/>
+    <ImageView fx:id="imageView" fitHeight="102.0" fitWidth="102.0" layoutX="14.0" layoutY="149.0" pickOnBounds="true"
+               preserveRatio="true"/>
   </children>
 </AnchorPane>
